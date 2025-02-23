@@ -21,30 +21,35 @@ def print_board (board):
 def slot_remaining():
     global free_slots
     free_slots = [index + 1 for index, slot in enumerate(board) if slot == "-"]
+    
+    if len(free_slots) == 0:
+        return False
+    else:
+        return True
 
 def player_turn():
     global board
     
-    slot_remaining()
-    print(f"Current player is {current_player}")
+    if slot_remaining():
+        print(f"Current player is {current_player}")
 
-    while True:
-        try:
-            player = int(input(f"{current_player} player turn. Choose board position {free_slots}: "))
+        while True:
+            try:
+                player = int(input(f"{current_player} player turn. Choose board position {free_slots}: "))
 
-            if player in free_slots:
-                break
-            else:
+                if player in free_slots:
+                    break
+                else:
+                    print("Invalid input!! Try again!")
+                    print(f"Valid input: {free_slots}")
+                    print("")
+            except:
                 print("Invalid input!! Try again!")
                 print(f"Valid input: {free_slots}")
                 print("")
-        except:
-            print("Invalid input!! Try again!")
-            print(f"Valid input: {free_slots}")
-            print("")
 
 
-    board[player - 1] = current_player
+        board[player - 1] = current_player
 
 def switch_player ():
     global current_player
@@ -59,9 +64,9 @@ def comp_turn ():
     
     global board
     
-    slot_remaining()
-    comp_choice = int(random.choice(free_slots)) 
-    board[comp_choice - 1] = current_player
+    if slot_remaining():
+        comp_choice = int(random.choice(free_slots)) 
+        board[comp_choice - 1] = current_player
 
 
 def win_row():
@@ -104,7 +109,7 @@ def check_win():
     win_column()
     win_diagonal()
 
-    if winner != None:
+    if winner != None and len(free_slots) > 0 :
         print_board(board)
         print("")
         print("###########")
@@ -117,8 +122,21 @@ def check_win():
         print("")
 
         return True
-    
-    return False
+    elif winner == None and len(free_slots) == 0 :
+        print_board(board)
+        print("")
+        print("###########")
+        print("")
+        print("Game Over!")
+        print("")
+        print("###########")
+        print("")
+        print("It's a tie!")
+        print("")
+
+        return True
+    else:
+        return False
 
 def choose_mode():
     print("Modes available")
