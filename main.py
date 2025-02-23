@@ -29,13 +29,19 @@ def player_turn():
     print(f"Current player is {current_player}")
 
     while True:
-        player = int(input(f"{current_player} player turn. Choose board position {free_slots}: "))
+        try:
+            player = int(input(f"{current_player} player turn. Choose board position {free_slots}: "))
 
-        if str(player) in free_slots:
-            break
-        else:
+            if player in free_slots:
+                break
+            else:
+                print("Invalid input!! Try again!")
+                print(f"Valid input: {free_slots}")
+                print("")
+        except:
             print("Invalid input!! Try again!")
             print(f"Valid input: {free_slots}")
+            print("")
 
 
     board[player - 1] = current_player
@@ -122,12 +128,12 @@ def choose_mode():
 
     while True:
         mode = input("choose your mode: ").upper().strip()
-
-        if mode == "A" or "B":
+        if mode == "A" or mode == "B":
             break
         else:
             print("Invalid input!! Try again!")
             print(f"You can only choose 'A' or 'B'")
+            print("")
 
     print(f"Mode '{mode}' chosen.")
     print("")
